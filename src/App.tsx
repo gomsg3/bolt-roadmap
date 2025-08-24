@@ -102,6 +102,12 @@ function App() {
   return (
     <div className="min-h-screen bg-white">
       <div className="container mx-auto px-8 py-12 max-w-8xl">
+        {/* App Title */}
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold text-slate-900 mb-2">Roadmap Pro</h1>
+          <p className="text-slate-600">Strategic product planning and feature prioritization</p>
+        </div>
+
         {/* Header */}
         <div className="mb-8">
           {currentRoadmap ? (
