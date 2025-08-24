@@ -90,10 +90,6 @@ function App() {
     setShowCreateRoadmapForm(false);
   };
   const handleExport = () => {
-  const handleSwitchRoadmap = (roadmapId: string) => {
-    setCurrentRoadmap(roadmapId);
-    setShowRoadmapSwitcher(false);
-  };
     window.print();
   };
 

@@ -87,9 +87,19 @@ export function useRoadmapData() {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) {
       const parsedData = JSON.parse(stored);
+      // If no current roadmap is set, use the latest one
+      let currentRoadmapId = parsedData.currentRoadmapId;
+      if (!currentRoadmapId && parsedData.roadmaps.length > 0) {
+        // Find the roadmap with the highest ID (latest created)
+        const latestRoadmap = parsedData.roadmaps.reduce((latest: Roadmap, current: Roadmap) => 
+          parseInt(current.id) > parseInt(latest.id) ? current : latest
+        );
+        currentRoadmapId = latestRoadmap.id;
+      }
       return {
         ...parsedData,
-        projectInfo: parsedData.projectInfo || defaultProjectInfo
+        projectInfo: parsedData.projectInfo || defaultProjectInfo,
+        currentRoadmapId
       };
     }
     return {
