@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Map, Users, Calendar } from 'lucide-react';
+import { Map, Users, Calendar, Plus } from 'lucide-react';
 import { useRoadmapData } from './hooks/useRoadmapData';
 import { RoadmapSelector } from './components/RoadmapSelector';
 import { TimelineView } from './components/TimelineView';
@@ -34,6 +34,9 @@ function App() {
   const [isFeatureModalOpen, setIsFeatureModalOpen] = useState(false);
   const [editingFeature, setEditingFeature] = useState<Feature | null>(null);
   const [isThemeModalOpen, setIsThemeModalOpen] = useState(false);
+  const [showCreateRoadmapForm, setShowCreateRoadmapForm] = useState(false);
+  const [newRoadmapName, setNewRoadmapName] = useState('');
+  const [newRoadmapDescription, setNewRoadmapDescription] = useState('');
 
   const handleEditFeature = (feature: Feature) => {
     setEditingFeature(feature);
@@ -66,6 +69,25 @@ function App() {
     setIsThemeModalOpen(false);
   };
 
+  const handleCreateRoadmap = () => {
+    if (newRoadmapName.trim()) {
+      createRoadmap({
+        name: newRoadmapName.trim(),
+        description: newRoadmapDescription.trim(),
+        features: [],
+        themes: []
+      });
+      setNewRoadmapName('');
+      setNewRoadmapDescription('');
+      setShowCreateRoadmapForm(false);
+    }
+  };
+
+  const handleCancelCreateRoadmap = () => {
+    setNewRoadmapName('');
+    setNewRoadmapDescription('');
+    setShowCreateRoadmapForm(false);
+  };
   const handleExport = () => {
     window.print();
   };
@@ -82,10 +104,19 @@ function App() {
         {/* Header */}
         <div className="mb-8">
           {currentRoadmap ? (
-            <RoadmapHeader 
-              roadmap={currentRoadmap}
-              onUpdateName={(name) => updateRoadmap(currentRoadmap.id, { name })}
-            />
+            <div className="flex items-center justify-between">
+              <RoadmapHeader 
+                roadmap={currentRoadmap}
+                onUpdateName={(name) => updateRoadmap(currentRoadmap.id, { name })}
+              />
+              <button
+                onClick={() => setShowCreateRoadmapForm(true)}
+                className="flex items-center gap-2 px-4 py-2 bg-slate-600 text-white rounded-md hover:bg-slate-700 transition-colors font-medium"
+              >
+                <Plus className="h-4 w-4" />
+                New Roadmap
+              </button>
+            </div>
           ) : (
             <div className="flex items-center gap-4 mb-4">
               <div className="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center">
@@ -98,6 +129,54 @@ function App() {
           )}
         </div>
 
+        {/* Create Roadmap Form */}
+        {showCreateRoadmapForm && (
+          <div className="mb-8 p-6 bg-white rounded-lg shadow-sm border border-slate-200">
+            <h3 className="text-lg font-semibold mb-4">Create New Roadmap</h3>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Roadmap Name *
+                </label>
+                <input
+                  type="text"
+                  placeholder="Enter roadmap name"
+                  value={newRoadmapName}
+                  onChange={(e) => setNewRoadmapName(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-slate-500"
+                  autoFocus
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Description
+                </label>
+                <textarea
+                  placeholder="Brief description of the roadmap"
+                  value={newRoadmapDescription}
+                  onChange={(e) => setNewRoadmapDescription(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-slate-500 resize-none"
+                  rows={3}
+                />
+              </div>
+              <div className="flex gap-3">
+                <button
+                  onClick={handleCreateRoadmap}
+                  disabled={!newRoadmapName.trim()}
+                  className="px-4 py-2 bg-slate-600 text-white rounded-md hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                  Create Roadmap
+                </button>
+                <button
+                  onClick={handleCancelCreateRoadmap}
+                  className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 transition-colors"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
         {/* Tabs */}
         <div className="flex space-x-1 mb-8 bg-slate-50 p-1 rounded-lg w-fit">
           {tabs.map((tab) => {
@@ -155,11 +234,18 @@ function App() {
         )}
 
         {!currentRoadmap && (
-          <div className="text-center py-12">
+          <div className="text-center py-16">
             <div className="text-gray-500">
-              <Map className="h-16 w-16 mx-auto mb-4 text-gray-300" />
-              <p className="text-lg">No roadmap selected</p>
-              <p className="text-sm">Create a new roadmap to get started</p>
+              <Map className="h-20 w-20 mx-auto mb-6 text-gray-300" />
+              <p className="text-xl font-medium mb-2">No roadmap available</p>
+              <p className="text-gray-400 mb-8">Create your first roadmap to get started</p>
+              <button
+                onClick={() => setShowCreateRoadmapForm(true)}
+                className="flex items-center gap-2 px-6 py-3 bg-slate-600 text-white rounded-md hover:bg-slate-700 transition-colors font-medium mx-auto"
+              >
+                <Plus className="h-5 w-5" />
+                Create New Roadmap
+              </button>
             </div>
           </div>
         )}
