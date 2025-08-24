@@ -103,16 +103,14 @@ function App() {
     <div className="min-h-screen bg-white">
       <div className="container mx-auto px-8 py-12 max-w-8xl">
         {/* App Title */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-slate-900 mb-2">Roadmap Pro</h1>
-          <p className="text-slate-600">Strategic product planning and feature prioritization</p>
-        </div>
-
-        {/* Header */}
-        <div className="mb-8">
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <h1 className="text-4xl font-bold text-slate-900">Roadmap Pro</h1>
+            <p className="text-slate-600">Strategic product planning and feature prioritization</p>
+          </div>
+          
           {currentRoadmap ? (
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-6">
+            <div className="flex items-center gap-6">
                 {/* Roadmap Switcher Dropdown */}
                 {data.roadmaps.length > 1 && (
                   <div className="relative">
@@ -166,7 +164,6 @@ function App() {
                     onUpdateName={(name) => updateRoadmap(currentRoadmap.id, { name })}
                   />
                 )}
-              </div>
               
               <button
                 onClick={() => setShowCreateRoadmapForm(true)}
@@ -177,16 +174,23 @@ function App() {
               </button>
             </div>
           ) : (
-            <div className="flex items-center gap-4 mb-4">
-              <div className="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center">
-                <Map className="h-6 w-6 text-slate-600" />
-              </div>
-              <h1 className="text-3xl font-semibold text-slate-800">
-                Product Roadmap
-              </h1>
-            </div>
+            <button
+              onClick={() => setShowCreateRoadmapForm(true)}
+              className="flex items-center gap-2 px-6 py-3 bg-slate-600 text-white rounded-md hover:bg-slate-700 transition-colors font-medium"
+            >
+              <Plus className="h-5 w-5" />
+              Create New Roadmap
+            </button>
           )}
         </div>
+
+        {/* Header */}
+        <div className="mb-8">
+          {currentRoadmap && (
+            <div className="mb-4">
+              {/* Additional roadmap info can go here if needed */}
+            </div>
+          )}
 
         {/* Create Roadmap Form */}
         {showCreateRoadmapForm && (
