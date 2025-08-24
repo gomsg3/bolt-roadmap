@@ -35,7 +35,7 @@ function App() {
   const [editingFeature, setEditingFeature] = useState<Feature | null>(null);
   const [isThemeModalOpen, setIsThemeModalOpen] = useState(false);
   const [showCreateRoadmapForm, setShowCreateRoadmapForm] = useState(false);
-  const [showRoadmapSwitcher, setShowRoadmapSwitcher] = useState(false);
+  const [showRoadmapDropdown, setShowRoadmapDropdown] = useState(false);
   const [newRoadmapName, setNewRoadmapName] = useState('');
   const [newRoadmapDescription, setNewRoadmapDescription] = useState('');
 
@@ -105,13 +105,63 @@ function App() {
         {/* Header */}
         <div className="mb-8">
           {currentRoadmap ? (
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <RoadmapHeader 
-                  roadmap={currentRoadmap}
-                  onUpdateName={(name) => updateRoadmap(currentRoadmap.id, { name })}
-                />
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-6">
+                {/* Roadmap Switcher Dropdown */}
+                {data.roadmaps.length > 1 && (
+                  <div className="relative">
+                    <button
+                      onClick={() => setShowRoadmapDropdown(!showRoadmapDropdown)}
+                      className="flex items-center gap-3 px-4 py-3 bg-white border border-slate-200 rounded-lg hover:border-slate-300 transition-all duration-200 min-w-64"
+                    >
+                      <div className="flex-1 text-left">
+                        <div className="font-semibold text-slate-800">{currentRoadmap.name}</div>
+                        {currentRoadmap.description && (
+                          <div className="text-sm text-slate-500 truncate">{currentRoadmap.description}</div>
+                        )}
+                      </div>
+                      <ChevronDown className={`h-4 w-4 text-slate-400 transition-transform duration-200 ${showRoadmapDropdown ? 'rotate-180' : ''}`} />
+                    </button>
+
+                    {showRoadmapDropdown && (
+                      <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-lg shadow-lg border border-slate-200 z-50 max-h-64 overflow-y-auto">
+                        <div className="p-2">
+                          {data.roadmaps
+                            .sort((a, b) => parseInt(b.id) - parseInt(a.id)) // Sort by latest first
+                            .map((roadmap) => (
+                            <button
+                              key={roadmap.id}
+                              onClick={() => {
+                                setCurrentRoadmap(roadmap.id);
+                                setShowRoadmapDropdown(false);
+                              }}
+                              className={`w-full text-left p-3 rounded-md transition-all duration-200 ${
+                                roadmap.id === currentRoadmap.id
+                                  ? 'bg-slate-50 border border-slate-200'
+                                  : 'hover:bg-slate-50'
+                              }`}
+                            >
+                              <div className="font-medium text-slate-800">{roadmap.name}</div>
+                              {roadmap.description && (
+                                <div className="text-sm text-slate-500 mt-1">{roadmap.description}</div>
+                              )}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Single Roadmap Display */}
+                {data.roadmaps.length === 1 && (
+                  <RoadmapHeader 
+                    roadmap={currentRoadmap}
+                    onUpdateName={(name) => updateRoadmap(currentRoadmap.id, { name })}
+                  />
+                )}
               </div>
+              
               <button
                 onClick={() => setShowCreateRoadmapForm(true)}
                 className="flex items-center gap-2 px-4 py-2 bg-slate-600 text-white rounded-md hover:bg-slate-700 transition-colors font-medium"
@@ -204,6 +254,13 @@ function App() {
         {/* Tab Content */}
         {activeTab === 'roadmap' && currentRoadmap && (
           <div>
+            {/* Close dropdown when clicking outside */}
+            {showRoadmapDropdown && (
+              <div 
+                className="fixed inset-0 z-40" 
+                onClick={() => setShowRoadmapDropdown(false)}
+              />
+            )}
             <RoadmapControls
               currentYear={currentYear}
               onYearChange={setCurrentYear}
