@@ -5,7 +5,9 @@ const defaultProjectInfo: ProjectInfo = {
   name: 'Product Roadmap',
   description: 'Strategic product planning and feature prioritization',
   team: 'Product Team',
-  lastUpdated: new Date().toLocaleDateString()
+  lastUpdated: new Date().toLocaleDateString(),
+  teamMembers: [],
+  stakeholders: []
 };
 
 const defaultRoadmap: Roadmap = {

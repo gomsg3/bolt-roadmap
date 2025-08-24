@@ -30,6 +30,22 @@ export interface ProjectInfo {
   description: string;
   team: string;
   lastUpdated: string;
+  teamMembers: TeamMember[];
+  stakeholders: Stakeholder[];
+}
+
+export interface TeamMember {
+  id: string;
+  name: string;
+  role: string;
+  email?: string;
+}
+
+export interface Stakeholder {
+  id: string;
+  name: string;
+  role: string;
+  email?: string;
 }
 
 export interface RoadmapData {

@@ -95,7 +95,7 @@ function App() {
 
   const tabs = [
     { id: 'roadmap' as Tab, label: 'Roadmap View', icon: Map },
-    { id: 'project' as Tab, label: 'Project Info', icon: Users },
+    { id: 'project' as Tab, label: 'Team Info', icon: Users },
     { id: 'summary' as Tab, label: 'Summary', icon: Calendar }
   ];
 
