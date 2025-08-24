@@ -111,40 +111,6 @@ function App() {
                   roadmap={currentRoadmap}
                   onUpdateName={(name) => updateRoadmap(currentRoadmap.id, { name })}
                 />
-                {data.roadmaps.length > 1 && (
-                  <div className="relative">
-                    <button
-                      onClick={() => setShowRoadmapSwitcher(!showRoadmapSwitcher)}
-                      className="flex items-center gap-2 px-3 py-2 text-slate-600 hover:bg-slate-50 rounded-md transition-colors text-sm border border-slate-200"
-                    >
-                      Switch Roadmap
-                      <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${showRoadmapSwitcher ? 'rotate-180' : ''}`} />
-                    </button>
-                    
-                    {showRoadmapSwitcher && (
-                      <div className="absolute top-full left-0 mt-1 bg-white rounded-lg shadow-lg border border-slate-200 z-10 min-w-64">
-                        <div className="p-2">
-                          {data.roadmaps.map((roadmap) => (
-                            <button
-                              key={roadmap.id}
-                              onClick={() => setCurrentRoadmap(roadmap.id)}
-                              className={`w-full text-left p-3 rounded-md transition-all duration-200 ${
-                                roadmap.id === currentRoadmap.id
-                                  ? 'bg-slate-50 text-slate-800 border border-slate-200'
-                                  : 'hover:bg-slate-50 text-slate-700'
-                              }`}
-                            >
-                              <div className="font-medium">{roadmap.name}</div>
-                              {roadmap.description && (
-                                <div className="text-sm text-slate-500 mt-1">{roadmap.description}</div>
-                              )}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                )}
               </div>
               <button
                 onClick={() => setShowCreateRoadmapForm(true)}
