@@ -240,6 +240,7 @@ function App() {
             </div>
           </div>
         )}
+        </div>
         {/* Tabs */}
         <div className="flex space-x-1 mb-8 bg-slate-50 p-1 rounded-lg w-fit">
           {tabs.map((tab) => {
