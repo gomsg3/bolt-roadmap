@@ -127,7 +127,7 @@ function App() {
                           {data.roadmaps.map((roadmap) => (
                             <button
                               key={roadmap.id}
-                              onClick={() => handleSwitchRoadmap(roadmap.id)}
+                              onClick={() => setCurrentRoadmap(roadmap.id)}
                               className={`w-full text-left p-3 rounded-md transition-all duration-200 ${
                                 roadmap.id === currentRoadmap.id
                                   ? 'bg-slate-50 text-slate-800 border border-slate-200'
