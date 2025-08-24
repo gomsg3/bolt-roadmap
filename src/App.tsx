@@ -98,14 +98,6 @@ function App() {
           )}
         </div>
 
-        {/* Roadmap Selector */}
-        <RoadmapSelector
-          roadmaps={data.roadmaps}
-          currentRoadmapId={data.currentRoadmapId}
-          onSelect={setCurrentRoadmap}
-          onCreateNew={createRoadmap}
-        />
-
         {/* Tabs */}
         <div className="flex space-x-1 mb-8 bg-slate-50 p-1 rounded-lg w-fit">
           {tabs.map((tab) => {
